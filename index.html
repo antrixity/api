@@ -2,2569 +2,362 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Donut Stats</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050505">
+<title>AntrixStats · DonutSMP</title>
 
 <style>
-
-
+/* Place "SF Pro Display Bold.ttf" in the same folder as this file */
 @font-face{
-font-family:'Minecraft';
-src:url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/files/minecraft.woff') format('woff');
-font-display:swap;
+  font-family:"SF Pro Display";
+  src:url("SF%20Pro%20Display%20Bold.ttf") format("truetype");
+  font-weight:700;
+  font-style:normal;
+  font-display:swap;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
+:root{
+  --accent:#0066ff;
+  --accent2:#00a2ff;
+  --glow:rgba(0,102,255,.14);
+  --bg:#050505;
+  --panel:rgba(255,255,255,.03);
+  --line:rgba(255,255,255,.07);
+  --muted:#8f8f94;
+  --font:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 
-html,body{
-width:100%;
-min-height:100%;
-}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%}
 
 body{
-
---glow:rgba(0,102,255,.13);
---accent:#0066ff;
---accent2:#00a2ff;
-
-background:#050505;
-color:white;
-
-overflow-x:hidden;
-}
-
-
-
-.container{
-position:relative;
-width:100%;
-min-height:100vh;
+  font-family:var(--font);
+  font-weight:700;
+  font-synthesis:none;
+  background:var(--bg);
+  color:#fff;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
 
 .hero{
-position:relative;
-overflow:hidden;
-
-width:100%;
-min-height:100vh;
-
-padding:38px 46px 60px;
-
-background:
-radial-gradient(circle at 12% 0%,
-var(--glow),
-transparent 42%),
-
-radial-gradient(circle at 88% 8%,
-var(--glow),
-transparent 46%),
-
-linear-gradient(
-160deg,
-#0b0b0c 0%,
-#050505 65%
-);
-
-transition:background .55s ease;
+  min-height:100vh;
+  padding:34px clamp(18px,4vw,46px) 70px;
+  background:
+    radial-gradient(circle at 12% 0%,var(--glow),transparent 42%),
+    radial-gradient(circle at 88% 8%,var(--glow),transparent 46%),
+    linear-gradient(160deg,#0b0b0c 0%,#050505 65%);
 }
 
+.wrap{max-width:1240px;margin:0 auto}
 
-
-.server-select{
-display:flex;
-gap:24px;
-margin-bottom:26px;
-align-items:center;
+/* header */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:34px;
+}
+.server{display:flex;align-items:center;gap:12px}
+.server img{width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.server span{font-size:20px}
+.brand{
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent2);opacity:.6;user-select:none;
 }
 
-.server{
-position:relative;
-display:flex;
-align-items:center;
-gap:12px;
-cursor:pointer;
-transition:.25s;
-overflow:hidden;
-
-opacity:.42;
+/* hero */
+.top{display:flex;align-items:center;gap:clamp(24px,5vw,56px)}
+.skin{
+  width:clamp(150px,22vw,270px);flex-shrink:0;
+  filter:drop-shadow(0 0 40px rgba(255,255,255,.08));
+  animation:float 5s ease-in-out infinite;
 }
+@keyframes float{50%{transform:translateY(-8px)}}
 
-.server:hover{
-transform:translateY(-2px);
-opacity:.8;
-}
-
-.server.active{
-opacity:1;
-}
-
-.server::before{
-content:'';
-
-position:absolute;
-left:-10px;
-right:-10px;
-bottom:-4px;
-
-height:2px;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.95),
-transparent
-);
-
-transform:translateX(-120%);
-animation:serverShine 3s linear infinite;
-}
-
-.server:not(.active)::before{
-display:none;
-}
-
-@keyframes serverShine{
-100%{
-transform:translateX(120%);
-}
-}
-
-.server img{
-width:32px;
-height:32px;
-
-
-object-fit:contain;
-object-position:center;
-
-filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));
-}
-
-.server span{
-font-size:20px;
-font-weight:700;
-
-background:
-linear-gradient(
-90deg,
-#ffffff,
-#d9d9d9,
-#ffffff
-);
-
--webkit-background-clip:text;
-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-
-
-.top{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:40px;
-}
-
-.left{
-flex:1;
-display:flex;
-flex-direction:column;
-justify-content:center;
-}
-
-.name-row{
-display:flex;
-align-items:center;
-gap:16px;
-flex-wrap:wrap;
-
-margin-bottom:24px;
-}
+.left{flex:1;min-width:0}
 
 .name{
-position:relative;
-
-font-size:72px;
-font-weight:800;
-line-height:1.05;
-letter-spacing:-4px;
-
-min-height:82px;
-
-white-space:nowrap;
+  font-size:clamp(38px,8vw,72px);
+  line-height:1.08;letter-spacing:-.05em;
+  margin-bottom:24px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:rgba(255,255,255,.88);
 }
-
-
-
-.name.fading{
-animation:nameFade 3.4s ease-in-out infinite;
+.name.idle{animation:idle 3.4s ease-in-out infinite}
+@keyframes idle{
+  0%,100%{opacity:.35;filter:blur(8px)}
+  25%,70%{opacity:1;filter:blur(0)}
 }
-
-@keyframes nameFade{
-
-0%{
-opacity:0;
-filter:blur(14px);
-transform:translateY(6px) scale(.985);
+.name.shine{
+  background:linear-gradient(110deg,rgba(255,255,255,.82) 40%,#fff 50%,rgba(255,255,255,.82) 60%) 130% 0/300% 100% no-repeat;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:sweep .8s ease-out both;
 }
+@keyframes sweep{to{background-position:-60% 0}}
 
-18%,58%{
-opacity:1;
-filter:blur(0);
-transform:translateY(0) scale(1);
+/* search */
+.search{display:flex;gap:12px;max-width:760px}
+.field{position:relative;flex:1;min-width:0}
+.field svg{
+  position:absolute;left:22px;top:50%;transform:translateY(-50%);
+  width:20px;height:20px;opacity:.55;pointer-events:none;
 }
-
-82%,100%{
-opacity:0;
-filter:blur(14px);
-transform:translateY(-6px) scale(.985);
+.field input{
+  width:100%;height:68px;padding:0 22px 0 58px;
+  font:inherit;font-size:18px;color:#fff;outline:none;
+  background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;
+  transition:border-color .2s,box-shadow .2s;
 }
+.field input::placeholder{color:var(--muted)}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--glow)}
 
+.btn{
+  position:relative;overflow:hidden;
+  height:68px;padding:0 34px;
+  font:inherit;font-size:17px;color:#fff;cursor:pointer;
+  border:0;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  transition:transform .2s,opacity .2s;
 }
+.btn:hover:not(:disabled){transform:translateY(-2px)}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn:focus-visible,.field input:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
+.status{min-height:24px;margin-top:16px;font-size:15px;color:var(--muted)}
+.status.error{color:#ff6d6d}
 
-
-.name-wrap{
-position:relative;
-display:inline-block;
-}
-
-.name-wrap .name{
-color:rgba(255,255,255,.82);
-}
-
-.name-wrap .sweep{
-position:absolute;
-inset:0;
-
-pointer-events:none;
-
-color:transparent;
--webkit-text-fill-color:transparent;
-
-background-repeat:no-repeat;
-
-
-background-image:
-linear-gradient(
-110deg,
-transparent 0 44%,
-rgba(255,255,255,1) 44% 50%,
-transparent 50% 100%
-);
-
-background-size:600% 100%;
-background-position:130% 0;
-
--webkit-background-clip:text;
-background-clip:text;
-}
-
-.name-wrap.shine .sweep{
-animation:nameSweep .6s 0s both
-cubic-bezier(.25,.46,.45,.94);
-}
-
-@keyframes nameSweep{
-from{ background-position:130% 0; }
-to{ background-position:-90% 0; }
-}
-
-
-
-
-
-.rank-badge{
-display:inline-block;
-
-font-family:'Minecraft','Inter',sans-serif;
-font-size:20px;
-font-weight:400;
-line-height:1;
-letter-spacing:.5px;
-
-white-space:nowrap;
-
-text-shadow:0 2px 0 rgba(0,0,0,.6);
-}
-
-
-
-.search-wrap{
-display:flex;
-align-items:center;
-gap:14px;
-max-width:760px;
-}
-
-.search-box{
-position:relative;
-flex:1;
-}
-
-.search-icon{
-position:absolute;
-left:22px;
-top:50%;
-transform:translateY(-50%);
-font-size:20px;
-opacity:.6;
-}
-
-.search-box input{
-width:100%;
-height:72px;
-
-padding:0 24px 0 60px;
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.03),
-rgba(255,255,255,.015)
-);
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:8px;
-
-color:white;
-
-font-size:18px;
-font-weight:600;
-
-outline:none;
-
-transition:.25s;
-}
-
-.search-box input:focus{
-border-color:var(--accent);
-
-box-shadow:
-0 0 0 4px var(--glow);
-}
-
-.search-box input::placeholder{
-color:#8f8f8f;
-font-weight:500;
-}
-
-button{
-position:relative;
-
-height:72px;
-
-padding:0 34px;
-
-border:none;
-
-border-radius:2px;
-
-overflow:hidden;
-
-background:
-linear-gradient(
-135deg,
-var(--accent),
-var(--accent2)
-);
-
-color:white;
-
-font-size:17px;
-font-weight:800;
-
-cursor:pointer;
-
-transition:.25s;
-}
-
-button::before{
-content:'';
-
-position:absolute;
-inset:0;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.22),
-transparent
-);
-
-transform:translateX(-120%);
-}
-
-button:hover::before{
-animation:btnShine .9s linear;
-}
-
-@keyframes btnShine{
-100%{
-transform:translateX(120%);
-}
-}
-
-button:hover{
-transform:translateY(-2px);
-}
-
-
-
-.skin{
-width:270px;
-
-order:-1;
-
-filter:
-drop-shadow(0 0 40px rgba(255,255,255,.08));
-
-animation:float 5s ease-in-out infinite;
-}
-
-@keyframes float{
-
-0%{
-transform:translateY(0px);
-}
-
-50%{
-transform:translateY(-8px);
-}
-
-100%{
-transform:translateY(0px);
-}
-
-}
-
-
-
-.profile-bar{
-display:flex;
-align-items:center;
-gap:14px;
-
-margin-top:20px;
-}
-
-.profile-bar:empty{
-display:none;
-}
-
-.profile-meta{
-display:flex;
-align-items:baseline;
-gap:9px;
-}
-
-.profile-meta .cap{
-font-size:11px;
-font-weight:800;
-letter-spacing:1.5px;
-text-transform:uppercase;
-
-color:#7c7c7c;
-}
-
-.profile-meta .pname{
-font-size:19px;
-font-weight:800;
-letter-spacing:-.3px;
-
-color:#f2f2f2;
-}
-
-.profile-meta .mode{
-font-size:11px;
-font-weight:800;
-letter-spacing:1px;
-
-padding:3px 8px;
-border-radius:5px;
-
-background:rgba(255,255,255,.08);
-color:#cfcfcf;
-}
-
-
-
-.section-title{
-display:flex;
-align-items:center;
-gap:12px;
-
-grid-column:1/-1;
-
-margin-top:34px;
-margin-bottom:-6px;
-
-font-size:15px;
-font-weight:800;
-letter-spacing:1.6px;
-text-transform:uppercase;
-
-color:#8f8f8f;
-}
-
-.section-title::after{
-content:'';
-flex:1;
-height:1px;
-background:
-linear-gradient(
-90deg,
-rgba(255,255,255,.10),
-transparent
-);
-}
-
-
-
-.panel{
-grid-column:1/-1;
-
-padding:26px 28px;
-
-border-radius:24px;
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.025),
-rgba(255,255,255,.012)
-);
-
-border:1px solid rgba(255,255,255,.06);
-}
-
-.panel-head{
-display:flex;
-align-items:center;
-gap:12px;
-
-margin-bottom:20px;
-
-font-size:14px;
-font-weight:800;
-letter-spacing:1.2px;
-text-transform:uppercase;
-
-color:#c9c9c9;
-}
-
-.panel-head .count{
-font-size:11px;
-font-weight:700;
-letter-spacing:.6px;
-
-padding:3px 8px;
-border-radius:5px;
-
-background:rgba(255,255,255,.07);
-color:#9a9a9a;
-}
-
-.slots{
-display:grid;
-
-grid-template-columns:
-repeat(auto-fill,minmax(64px,1fr));
-
-gap:10px;
-}
-
-.slot{
-position:relative;
-
-aspect-ratio:1;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:12px;
-
-background:rgba(0,0,0,.34);
-border:1px solid rgba(255,255,255,.06);
-
-transition:.18s;
-}
-
-.slot.filled{
-cursor:help;
-}
-
-.slot.filled:hover{
-transform:translateY(-2px);
-border-color:rgba(255,255,255,.24);
-background:rgba(255,255,255,.05);
-}
-
-.slot img{
-width:74%;
-height:74%;
-object-fit:contain;
-
-image-rendering:pixelated;
-
-filter:drop-shadow(0 2px 4px rgba(0,0,0,.55));
-}
-
-.slot .qty{
-position:absolute;
-right:5px;
-bottom:3px;
-
-font-family:'Minecraft','Inter',sans-serif;
-font-size:12px;
-
-color:#fff;
-text-shadow:1px 1px 0 rgba(0,0,0,.9);
-}
-
-
-.slot.filled::after{
-content:'';
-
-position:absolute;
-inset:-1px;
-
-border-radius:12px;
-border:1px solid var(--rar,transparent);
-
-opacity:.55;
-
-pointer-events:none;
-}
-
-.slot.empty{
-background:
-repeating-linear-gradient(
-45deg,
-rgba(255,255,255,.014) 0 6px,
-transparent 6px 12px
-);
-}
-
-.gear-note{
-margin-top:16px;
-
-font-size:13px;
-font-weight:600;
-
-color:#8b8b8b;
-}
-
-
-
+/* stats */
 .stats{
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(240px,1fr));
-
-gap:20px;
-
-margin-top:38px;
+  display:grid;gap:16px;margin-top:40px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 }
-
 .card{
-position:relative;
-
-
-container-type:inline-size;
-
-padding:28px;
-
-border-radius:24px;
-
-overflow:hidden;
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.025),
-rgba(255,255,255,.015)
-);
-
-border:1px solid rgba(255,255,255,.06);
-
-transition:.25s;
+  padding:22px 24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:14px;
+  transition:transform .2s,border-color .2s;
+  animation:rise .4s ease both;
 }
-
-.card:hover{
-transform:translateY(-3px);
-border-color:rgba(255,255,255,.12);
-}
-
-.card::before{
-content:'';
-
-position:absolute;
-inset:0;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.03),
-transparent
-);
-
-transform:translateX(-100%);
-transition:1s;
-}
-
-.card:hover::before{
-transform:translateX(100%);
-}
+.card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.14)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
 
 .label{
-display:flex;
-align-items:center;
-gap:12px;
-
-font-size:14px;
-font-weight:700;
-letter-spacing:1px;
-
-text-transform:uppercase;
-
-margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:14px;
 }
+.label img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}
+.value{font-size:clamp(30px,4vw,40px);letter-spacing:-.03em;line-height:1.1}
 
-.label img{
-width:26px;
-height:26px;
-object-fit:contain;
+.money{color:#e8bc42}.shards{color:#9f72ff}.playtime{color:#589cff}
+.kills{color:#ff6d6d}.deaths{color:#d7d7d7}.placed{color:#50e791}
+.broken{color:#e28a46}.mobs{color:#47dfaa}.kd{color:#ffd76a}
+
+.foot{margin-top:60px;text-align:center;font-size:12px;color:#55555a}
+
+@media (max-width:760px){
+  .top{flex-direction:column;align-items:stretch;gap:20px;text-align:center}
+  .skin{width:150px;margin:0 auto}
+  .search{flex-direction:column}
+  .field input,.btn{height:60px}
+  .name{margin-bottom:18px}
 }
-
-
-
-.value{
-
-font-size:clamp(24px,17cqw,52px);
-font-weight:800;
-letter-spacing:-1.5px;
-line-height:1.05;
-
-
-white-space:nowrap;
-
-overflow-wrap:normal;
-word-break:keep-all;
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
 }
-
-.value small{
-font-size:22px;
-font-weight:700;
-opacity:.45;
-letter-spacing:0;
-}
-
-.sub{
-margin-top:14px;
-
-font-size:13px;
-font-weight:600;
-
-color:#8b8b8b;
-}
-
-.bar{
-position:relative;
-
-height:7px;
-
-margin-top:14px;
-
-border-radius:99px;
-
-background:rgba(255,255,255,.07);
-
-overflow:hidden;
-}
-
-.bar i{
-position:absolute;
-inset:0 auto 0 0;
-
-border-radius:99px;
-
-background:
-linear-gradient(
-90deg,
-var(--accent),
-var(--accent2)
-);
-}
-
-.bar.gold i{
-background:
-linear-gradient(
-90deg,
-#e8bc42,
-#ffe08a
-);
-}
-
-
-
-.brand{
-position:fixed;
-top:18px;
-right:22px;
-z-index:50;
-font-size:12px;
-font-weight:700;
-letter-spacing:.12em;
-text-transform:uppercase;
-color:var(--accent2,#00a2ff);
-opacity:.55;
-pointer-events:none;
-user-select:none;
-transition:opacity .3s ease,color .3s ease;
-}
-
-.brand:hover{
-opacity:.8;
-}
-
-@media (max-width:640px){
-.brand{
-top:12px;
-right:14px;
-font-size:10px;
-}
-}
-
-
-
-.money{color:#e8bc42}
-.shards{color:#9f72ff}
-.playtime{color:#589cff}
-.kills{color:#ff6d6d}
-.deaths{color:#d7d7d7}
-.placed{color:#50e791}
-.broken{color:#e28a46}
-.mobs{color:#47dfaa}
-
-.networth{color:#3ddc84}
-.skillavg{color:#ffd76a}
-.slayer{color:#ff8a5c}
-.souls{color:#7ce7ff}
-.minions{color:#ffc46b}
-.zones{color:#9fe0ff}
-.quests{color:#c7f06a}
-.secrets{color:#ffd76a}
-
-.combat{color:#ff6d6d}
-.mining{color:#8fd0ff}
-.farming{color:#8fe36a}
-.foraging{color:#5bd68a}
-.enchanting{color:#c98cff}
-.alchemy{color:#e07bff}
-.fishing{color:#4fc3f7}
-.taming{color:#ffb974}
-.carpentry{color:#d9a06b}
-.runecrafting{color:#8f9bff}
-.social{color:#6ee7a8}
-.hunting{color:#ff9f6b}
-
-.loading,
-.error{
-margin-top:18px;
-font-size:17px;
-font-weight:500;
-}
-
-.error{
-color:#ff6b6b;
-}
-
-
-
-@media(max-width:900px){
-
-.hero{
-padding:16px 14px 40px;
-}
-
-.server-select{
-gap:16px;
-margin-bottom:20px;
-}
-
-.server span{
-font-size:16px;
-}
-
-.top{
-flex-direction:column;
-align-items:center;
-text-align:center;
-gap:22px;
-}
-
-.left{
-width:100%;
-align-items:center;
-}
-
-.skin{
-width:160px;
-max-width:70vw;
-}
-
-.name{
-font-size:42px;
-letter-spacing:-2px;
-min-height:auto;
-}
-
-.name-row{
-justify-content:center;
-gap:10px;
-margin-bottom:18px;
-}
-
-.rank-badge{
-padding:7px 12px 5px;
-font-size:12px;
-}
-
-.search-wrap{
-width:100%;
-flex-direction:column;
-gap:12px;
-}
-
-.search-box{
-width:100%;
-}
-
-.search-box input{
-height:62px;
-font-size:16px;
-padding-left:54px;
-}
-
-button{
-width:100%;
-height:62px;
-font-size:16px;
-border-radius:2px;
-}
-
-.profile-bar{
-margin-top:22px;
-gap:10px;
-justify-content:center;
-}
-
-.profile-meta .pname{
-font-size:16px;
-}
-
-.panel{
-padding:18px 16px;
-border-radius:18px;
-}
-
-.slots{
-grid-template-columns:repeat(auto-fill,minmax(52px,1fr));
-gap:8px;
-}
-
-.section-title{
-margin-top:26px;
-font-size:13px;
-}
-
-.stats{
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-margin-top:26px;
-}
-
-.card{
-padding:18px;
-border-radius:18px;
-}
-
-.value{
-font-size:26px;
-}
-
-.value small{
-font-size:14px;
-}
-
-.label{
-font-size:12px;
-gap:8px;
-margin-bottom:12px;
-}
-
-.label img{
-width:20px;
-height:20px;
-}
-
-.loading,
-.error{
-font-size:15px;
-}
-
-}
-
 </style>
 </head>
 
-<body data-server="donut">
+<body>
+<main class="hero">
+<div class="wrap">
 
-<div class="brand">AntrixStats</div>
+  <header class="topbar">
+    <div class="server">
+      <img src="https://website.donutsmp.org/bcGCsev.png" alt="" onerror="this.style.display='none'">
+      <span>DonutSMP</span>
+    </div>
+    <div class="brand">AntrixStats</div>
+  </header>
 
-<div class="container">
+  <section class="top">
+    <img id="skin" class="skin" src="https://vzge.me/bust/lovehutao1.png?autocrop" alt="Player skin">
 
-<div class="hero">
+    <div class="left">
+      <h1 id="playerName" class="name idle">DonutSMP</h1>
 
-<div class="server-select">
+      <form class="search" id="searchForm" autocomplete="off">
+        <div class="field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="username" type="text" maxlength="16" spellcheck="false"
+                 placeholder="Search Minecraft username..." aria-label="Minecraft username">
+        </div>
+        <button class="btn" id="searchBtn" type="submit">Search</button>
+      </form>
 
-<div class="server active"
-id="server-donut"
-onclick="setServer('donut')">
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </div>
+  </section>
 
-<img src="https://website.donutsmp.org/bcGCsev.png"
-alt="DonutSMP">
+  <section id="stats" class="stats"></section>
 
-<span>DonutSMP</span>
-
+  <p class="foot">Not affiliated with Mojang or DonutSMP.</p>
 </div>
-
-<div class="server"
-id="server-hypixel"
-onclick="setServer('hypixel')">
-
-<img src="https://minecraft.wiki/images/Hypixel.png"
-alt="Hypixel">
-
-<span>Hypixel</span>
-
-</div>
-
-</div>
-
-<div class="top">
-
-<img
-id="skin"
-class="skin"
-src="https://vzge.me/bust/lovehutao1.png?autocrop"
-alt="Player skin">
-
-<div class="left">
-
-<div class="name-row">
-
-<div id="nameWrap" class="name-wrap">
-
-<div id="playerName" class="name fading">
-DonutSMP
-</div>
-
-<div id="nameSweep"
-class="name sweep"
-aria-hidden="true"></div>
-
-</div>
-
-<div id="rankBadge"></div>
-
-</div>
-
-<div class="search-wrap">
-
-<div class="search-box">
-
-<div class="search-icon">
-&#8981;
-</div>
-
-<input
-id="username"
-placeholder="Search Minecraft username..."
-aria-label="Minecraft username">
-
-</div>
-
-<button onclick="fetchStats()">
-Search
-</button>
-
-</div>
-
-<div id="loading" class="loading"></div>
-<div id="error" class="error"></div>
-
-</div>
-
-</div>
-
-<div id="profileBar" class="profile-bar"></div>
-
-<div id="stats" class="stats"></div>
-
-</div>
-
-</div>
+</main>
 
 <script>
-
-const icons={
-
-money:'https://ccvaults.com/assets/10.%20Items/11.%20Materials/Emerald.png',
-
-shards:'https://ccvaults.com/assets/10.%20Items/21.%20Decoration/Amethyst_Shard.png',
-
-playtime:'https://minecraft.wiki/images/Compass_JE3_BE3.gif?0043f&format=original',
-
-kills:'https://minecraft.wiki/images/Enchanted_Diamond_Sword.gif?f741f&format=original',
-
-deaths:'https://ccvaults.com/assets/80.%20Particles/raid_omen.png',
-
-placed_blocks:'https://ccvaults.com/assets/20.%20Blocks/18.%20Decoration/Grass_Block.png',
-
-broken_blocks:'https://minecraft.wiki/images/Enchanted_Diamond_Pickaxe.gif?c7aaa&format=original',
-
-mobs_killed:'https://ccvaults.com/assets/80.%20Particles/trial_omen.png',
-
-kd:'https://minecraft.wiki/images/Enchanted_Netherite_Sword.gif?a1a02&format=original'
-
+const ICONS={
+  money:'https://ccvaults.com/assets/10.%20Items/11.%20Materials/Emerald.png',
+  shards:'https://ccvaults.com/assets/10.%20Items/21.%20Decoration/Amethyst_Shard.png',
+  playtime:'https://minecraft.wiki/images/Compass_JE3_BE3.gif?0043f&format=original',
+  kills:'https://minecraft.wiki/images/Enchanted_Diamond_Sword.gif?f741f&format=original',
+  deaths:'https://ccvaults.com/assets/80.%20Particles/raid_omen.png',
+  placed:'https://ccvaults.com/assets/20.%20Blocks/18.%20Decoration/Grass_Block.png',
+  broken:'https://minecraft.wiki/images/Enchanted_Diamond_Pickaxe.gif?c7aaa&format=original',
+  mobs:'https://ccvaults.com/assets/80.%20Particles/trial_omen.png',
+  kd:'https://minecraft.wiki/images/Enchanted_Netherite_Sword.gif?a1a02&format=original'
 };
 
-
-
-const hyIcons={
-
-networth:'https://minecraft.wiki/images/Emerald_JE3_BE3.png',
-
-purse:'https://ccvaults.com/assets/10.%20Items/11.%20Materials/Gold_Ingot.png',
-
-skillavg:'https://minecraft.wiki/images/Bottle_o%27_Enchanting.gif',
-
-slayer:'https://minecraft.wiki/images/Enchanted_Diamond_Sword.gif?f741f&format=original',
-
-souls:'https://minecraft.wiki/images/Nether_Star.gif',
-
-kills:'https://minecraft.wiki/images/Diamond_Axe_JE3_BE3.png',
-
-deaths:'https://ccvaults.com/assets/80.%20Particles/raid_omen.png',
-
-minions:'https://ccvaults.com/assets/20.%20Blocks/18.%20Decoration/Grass_Block.png',
-
-zones:'https://minecraft.wiki/images/Compass_JE3_BE3.gif?0043f&format=original',
-
-quests:'https://minecraft.wiki/images/Book_JE2_BE2.png',
-
-secrets:'https://minecraft.wiki/images/Ender_Pearl_JE3_BE2.png',
-
-combat:'https://minecraft.wiki/images/Enchanted_Diamond_Sword.gif?f741f&format=original',
-
-mining:'https://minecraft.wiki/images/Enchanted_Diamond_Pickaxe.gif?c7aaa&format=original',
-
-farming:'https://minecraft.wiki/images/Wheat_JE2_BE2.png',
-
-foraging:'https://ccvaults.com/assets/20.%20Blocks/18.%20Decoration/Grass_Block.png',
-
-enchanting:'https://minecraft.wiki/images/Enchanting_Table.gif',
-
-alchemy:'https://minecraft.wiki/images/Brewing_Stand_%28item%29_JE3_BE2.png',
-
-fishing:'https://minecraft.wiki/images/Fishing_Rod_JE2_BE2.png',
-
-taming:'https://minecraft.wiki/images/Lead_JE2_BE2.png',
-
-carpentry:'https://minecraft.wiki/images/Crafting_Table_JE4_BE3.png',
-
-runecrafting:'https://ccvaults.com/assets/10.%20Items/21.%20Decoration/Amethyst_Shard.png',
-
-social:'https://ccvaults.com/assets/10.%20Items/11.%20Materials/Emerald.png',
-
-hunting:'https://minecraft.wiki/images/Bow_JE2_BE1.png'
-
-};
-
-
-
-
-
-const SHARED_GLOW='rgba(0,102,255,.13)';
-
-const themes={
-
-donut:{
-glow:SHARED_GLOW,
-accent:'#0066ff',
-accent2:'#00a2ff'
-},
-
-
-
-hypixel:{
-glow:SHARED_GLOW,
-accent:'#0066ff',
-accent2:'#00a2ff'
-}
-
-};
-
-const HY_API='https://statsapi.tem.cx';
-
-let currentServer='donut';
-
-
-
-const idleWords=[
-'DonutSMP',
-'Hypixel'
-];
-
-const FADE_MS=3400;
-
-let idleIndex=0;
-let idleTimer=null;
-let idleStopped=false;
-
-function startIdleFade(startIndex){
-
-idleStopped=false;
-
-idleIndex=typeof startIndex==='number'
-? startIndex
-: 0;
-
-const el=document.getElementById('playerName');
-
-if(idleTimer){
-clearInterval(idleTimer);
-idleTimer=null;
-}
-
-el.innerText=idleWords[idleIndex];
-el.style.removeProperty('color');
-
-
-el.classList.remove('fading');
-void el.offsetWidth;
-el.classList.add('fading');
-
-idleTimer=setInterval(function(){
-
-if(idleStopped){
-return;
-}
-
-idleIndex=(idleIndex+1)%idleWords.length;
-
-el.innerText=idleWords[idleIndex];
-
-},FADE_MS);
-
-}
-
-function stopIdleFade(){
-
-idleStopped=true;
-
-if(idleTimer){
-clearInterval(idleTimer);
-idleTimer=null;
-}
-
-document.getElementById('playerName')
-.classList.remove('fading');
-
-}
-
-
-
-function escapeHtml(s){
-return String(s).replace(/[&<>"']/g,function(c){
-return {
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
-}[c];
-});
-}
-
-function clearPlayerUI(){
-
-document.getElementById('stats').innerHTML='';
-document.getElementById('profileBar').innerHTML='';
-document.getElementById('rankBadge').innerHTML='';
-document.getElementById('error').innerText='';
-document.getElementById('loading').innerText='';
-
-}
-
-
-
-function showName(text){
-
-const wrap=document.getElementById('nameWrap');
-const el=document.getElementById('playerName');
-
-stopIdleFade();
-
-el.innerText=text;
-
-
-document.getElementById('nameSweep').innerText=text;
-
-wrap.classList.remove('shine');
-void wrap.offsetWidth;
-wrap.classList.add('shine');
-
-}
-
-
-
-function setServer(server){
-
-if(currentServer===server){
-return;
-}
-
-currentServer=server;
-
-document.body.setAttribute('data-server',server);
-
-const t=themes[server];
-
-document.body.style.setProperty('--glow',t.glow);
-document.body.style.setProperty('--accent',t.accent);
-document.body.style.setProperty('--accent2',t.accent2);
-
-document.getElementById('server-donut')
-.classList.toggle('active',server==='donut');
-
-document.getElementById('server-hypixel')
-.classList.toggle('active',server==='hypixel');
-
-clearPlayerUI();
-
-document.getElementById('nameWrap')
-.classList.remove('shine');
-
-document.getElementById('playerName')
-.style.removeProperty('color');
-
-document.getElementById('nameSweep').innerText='';
-
-startIdleFade(server==='hypixel'?1:0);
-
-document.getElementById('username').placeholder=
-server==='hypixel'
-? 'Search Hypixel SkyBlock username...'
-: 'Search Minecraft username...';
-
-}
-
-
-
-function renderRank(rank){
-
-const color=(rank && rank.color) ? rank.color : '#c8c8c8';
-
-const label=(rank && rank.name && rank.name!=='NONE')
-? rank.name
-: 'DEFAULT';
-
-
-
-document.getElementById('rankBadge').innerHTML=
-'<div class="rank-badge" style="color:'+
-escapeHtml(color)+'">['+
-escapeHtml(label)+']</div>';
-
-}
-
-
-
-function profileScore(m,prof){
-
-if(!m){
-return -1;
-}
-
-const skillAvg=(m.skills && typeof m.skills.average==='number')
-? m.skills.average
-: 0;
-
-const slayerXp=(m.slayers && m.slayers.xp) || 0;
-
-const purse=Math.max(0,m.purse||0);
-
-const souls=(m.fairySouls && m.fairySouls.total) || 0;
-
-const minions=(prof && prof.minionCount) || 0;
-
-const zones=(m.zones||[])
-.filter(function(z){return z.visited}).length;
-
-const soulsMax=(m.fairySouls && m.fairySouls.max) || 0;
-
-const minionsMax=(prof && prof.maxUniqueMinions) || 0;
-
-const zonesMax=(m.zones||[]).length;
-
-
-
-const ratio=function(v,max){
-return max>0 ? Math.min(1,v/max) : 0;
-};
-
-return (skillAvg*100)+
-(Math.log10(slayerXp+1)*420)+
-(Math.log10(purse+1)*200)+
-(ratio(souls,soulsMax)*500)+
-(ratio(minions,minionsMax)*400)+
-(ratio(zones,zonesMax)*300);
-
-}
-
-
-
-const PRIZM_SUMMARY='https://skyprizm.com/api/profile-summary';
-const PRIZM_FULL='https://skyprizm.com/api/skyblock-profile?ign=';
-
-const ELITE_NW='https://api.elitebot.dev/profile/{p}/{s}/networth';
-
-
-
-const POST_PROXIES=[
-function(u){ return 'https://proxy.cors.sh/'+u; }
-];
-
-
-
-const GET_PROXIES=[
-function(u){ return 'https://proxy.cors.sh/'+u; },
-function(u){ return 'https://api.allorigins.win/raw?url='+
-encodeURIComponent(u); }
-];
-
-
-
-function fetchPrizmNetworth(ign){
-
-if(!ign){
-return Promise.resolve(null);
-}
-
-const payload=JSON.stringify({ign:ign});
-
-
-
-function viaSummary(i){
-
-if(i>=POST_PROXIES.length){
-return viaFull(0);
-}
-
-return fetch(POST_PROXIES[i](PRIZM_SUMMARY),{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:payload
-})
-.then(function(r){
-return r.ok ? r.json() : null;
-})
-.then(function(j){
-const nw=j && j.summary && j.summary.networth;
-if(typeof nw==='number' && nw>0){
-return nw;
-}
-return viaSummary(i+1);
-})
-.catch(function(){
-return viaSummary(i+1);
-});
-
-}
-
-
-
-function viaFull(i){
-
-if(i>=GET_PROXIES.length){
-return null;
-}
-
-const target=PRIZM_FULL+encodeURIComponent(ign);
-
-return fetch(GET_PROXIES[i](target))
-.then(function(r){
-return r.ok ? r.json() : null;
-})
-.then(function(j){
-const nw=j && j.skycryptNetworth;
-if(typeof nw==='number' && nw>0){
-return nw;
-}
-return viaFull(i+1);
-})
-.catch(function(){
-return viaFull(i+1);
-});
-
-}
-
-return viaSummary(0);
-
-}
-
-
-
-function fetchEliteNetworth(playerUuid,profileUuid){
-
-if(!playerUuid || !profileUuid){
-return Promise.resolve(null);
-}
-
-const target=ELITE_NW
-.replace('{p}',playerUuid)
-.replace('{s}',profileUuid);
-
-function attempt(i){
-
-if(i>=GET_PROXIES.length){
-return null;
-}
-
-return fetch(GET_PROXIES[i](target))
-.then(function(r){
-return r.ok ? r.json() : null;
-})
-.then(function(j){
-if(!j || typeof j.networth!=='number'){
-return attempt(i+1);
-}
-
-if(j.noInventory && j.networth===0){
-return null;
-}
-return j.networth;
-})
-.catch(function(){
-return attempt(i+1);
-});
-
-}
-
-return attempt(0);
-
-}
-
-
-
-const PRICES_URL='https://raw.githubusercontent.com/'+
-'SkyHelperBot/Prices/main/prices.json';
-
-
-
-const nwCats=['armor','equipment','inventory','accessory_bag',
-'ender_chest','wardrobe','personal_vault','fishing_bag'];
-
-let priceCache=null;
-
-function fetchPrices(){
-
-if(priceCache){
-return Promise.resolve(priceCache);
-}
-
-return fetch(PRICES_URL)
-.then(function(r){
-return r.ok ? r.json() : null;
-})
-.then(function(j){
-priceCache=j;
-return j;
-})
-.catch(function(){
-return null;
-});
-
-}
-
-
-
-function itemValue(it,prices){
-
-if(!it){
-return 0;
-}
-
-const id=String(it.id||'').toLowerCase();
-
-if(!id){
-return 0;
-}
-
-let unit=prices[id]||0;
-
-
-
-const ench=it.enchantments||{};
-
-for(const name in ench){
-if(Object.prototype.hasOwnProperty.call(ench,name)){
-const key='enchantment_'+String(name).toLowerCase()+'_'+
-parseInt(ench[name],10);
-unit+=prices[key]||0;
-}
-}
-
-if(it.recombobulated){
-unit+=prices['recombobulator_3000']||0;
-}
-
-const count=(it.count>0)?it.count:1;
-
-return unit*count;
-
-}
-
-function computeNetworth(m,prices){
-
-if(!m || !prices){
-return null;
-}
-
-let total=Math.max(0,m.purse||0);
-
-const inv=m.inventories||{};
-
-for(let i=0;i<nwCats.length;i++){
-const items=inv[nwCats[i]]||[];
-for(let j=0;j<items.length;j++){
-total+=itemValue(items[j],prices);
-}
-}
-
-
-
-const pets=(m.pets && m.pets.list)||[];
-
-for(let i=0;i<pets.length;i++){
-const pet=pets[i];
-if(!pet){
-continue;
-}
-let key=String(pet.type||'').toLowerCase();
-if(pet.tier){
-key+=';'+String(pet.tier).toLowerCase();
-}
-total+=prices[key]||0;
-}
-
-return total;
-
-}
-
-
-
-function fetchStats(){
-
-if(currentServer==='hypixel'){
-return fetchHypixel();
-}
-
-return fetchDonut();
-
-}
-
-
-
-async function fetchHypixel(){
-
-const username=document
-.getElementById('username')
-.value.trim();
-
-const loading=document.getElementById('loading');
-const error=document.getElementById('error');
-
-if(!username){
-error.innerText='Enter username';
-return;
-}
-
-clearPlayerUI();
-
-loading.innerText='Loading Hypixel stats...';
-
-try{
-
-const res=await fetch(
-HY_API+'/player/'+encodeURIComponent(username)
-);
-
-if(!res.ok){
-throw new Error('http '+res.status);
-}
-
-const data=await res.json();
-
-
-if(!data || data.error || !data.player){
-loading.innerText='';
-error.innerText='Player not found';
-return;
-}
-
-const p=data.player;
-
-showName(p.username);
-
-document.getElementById('skin')
-.src='https://vzge.me/bust/'+
-encodeURIComponent(p.uuid || p.username)+
-'.png?autocrop';
-
-renderRank(p.rank);
-
-const profiles=p.profiles || [];
-
-if(!profiles.length){
-loading.innerText='';
-error.innerText='No SkyBlock profiles found';
-return;
-}
-
-loading.innerText='Comparing '+profiles.length+
-' profile'+(profiles.length===1?'':'s')+'...';
-
-
-const pricesPromise=fetchPrices();
-
-const loaded=await Promise.all(
-profiles.map(function(pr){
-
-return fetch(
-HY_API+'/player/'+
-encodeURIComponent(p.username)+'/'+
-encodeURIComponent(pr.name)
-)
-.then(function(r){
-return r.ok ? r.json() : null;
-})
-.then(function(d){
-
-if(!d || d.error || !d.member){
-return null;
-}
-
-return {
-name:pr.name,
-uuid:pr.uuid,
-member:d.member,
-profile:d.profile||{},
-score:profileScore(d.member,d.profile||{})
-};
-
-})
-.catch(function(){
-return null;
-});
-
-})
-);
-
-const usable=loaded.filter(Boolean);
-
-if(!usable.length){
-loading.innerText='';
-error.innerText='No readable profile data';
-return;
-}
-
-usable.sort(function(a,b){
-return b.score-a.score;
-});
-
-const best=usable[0];
-
-
-
-let exact=await fetchPrizmNetworth(p.username);
-
-if(exact===null || exact===undefined){
-exact=await fetchEliteNetworth(p.uuid,best.uuid);
-}
-
-if(exact!==null && exact!==undefined){
-best.networth=exact;
-best.nwExact=true;
-}else{
-best.networth=computeNetworth(best.member,await pricesPromise);
-best.nwExact=false;
-}
-
-loading.innerText='';
-
-renderBestProfile(best);
-
-renderHypixelStats(best);
-
-}catch(err){
-
-loading.innerText='';
-error.innerText='Failed to fetch Hypixel API';
-console.log(err);
-
-}
-
-}
-
-function renderBestProfile(best){
-
-const mode=best.profile.mode;
-
-document.getElementById('profileBar').innerHTML=
-
-'<div class="profile-meta">'+
-'<span class="cap">Profile</span>'+
-'<span class="pname">'+escapeHtml(best.name)+'</span>'+
-(mode && mode!=='normal'
-? '<span class="mode">'+escapeHtml(mode.toUpperCase())+'</span>'
-: '')+
-'</div>';
-
-}
-
-
-
-function statValue(list,rawName){
-
-if(!list){
-return 0;
-}
-
-for(let i=0;i<list.length;i++){
-if(list[i].rawName===rawName){
-return list[i].value;
-}
-}
-
-return 0;
-
-}
-
-function achAmount(ach,id){
-
-if(!ach || !ach.tiered){
-return 0;
-}
-
-for(let i=0;i<ach.tiered.length;i++){
-if(ach.tiered[i].id===id){
-return ach.tiered[i].amount||0;
-}
-}
-
-return 0;
-
-}
-
-
-
-function capped(value,max){
-
-const v=Math.max(0,Math.floor(value||0));
-const t=Math.max(0,Math.floor(max||0));
-
-const shown=(t>0 && v>t) ? t : v;
-
-return shorten(shown)+'<small>/'+shorten(t)+'</small>';
-
-}
-
-
-
-
-
-const mcColors={
-'0':'#000000','1':'#0000aa','2':'#00aa00','3':'#00aaaa',
-'4':'#aa0000','5':'#aa00aa','6':'#ffaa00','7':'#aaaaaa',
-'8':'#555555','9':'#5555ff','a':'#55ff55','b':'#55ffff',
-'c':'#ff5555','d':'#ff55ff','e':'#ffff55','f':'#ffffff'
-};
-
-
-
-function stripMc(s){
-return String(s||'').replace(/§./g,'');
-}
-
-
-
-function nameColor(it){
-
-const lore=(it.display && it.display.lore) || [];
-
-for(let i=lore.length-1;i>=0;i--){
-
-const line=lore[i];
-
-if(/COMMON|UNCOMMON|RARE|EPIC|LEGENDARY|MYTHIC|DIVINE|SPECIAL/i.test(stripMc(line))){
-
-const c=String(line).match(/§([0-9a-f])/i);
-
-if(c){
-return mcColors[c[1].toLowerCase()];
-}
-
-}
-
-}
-
-const m=String((it.display && it.display.name)||'')
-.match(/§([0-9a-f])/i);
-
-return m ? mcColors[m[1].toLowerCase()] : '#cfcfcf';
-
-}
-
-
-
-function itemImage(it){
-
-
-
-if(it.headTexture){
-return 'https://sky.shiiyu.moe/api/head/'+
-encodeURIComponent(it.headTexture);
-}
-
-const id=String(it.id||'').split(':')[0];
-
-return 'https://sky.shiiyu.moe/api/item/'+
-encodeURIComponent(id);
-
-}
-
-
-
-function itemTitle(it){
-
-const name=stripMc(it.display && it.display.name)||it.id;
-
-const lore=(it.display && it.display.lore)
-? it.display.lore.map(stripMc).filter(function(l){
-return l.trim().length;
-}).slice(0,12).join('\n')
-: '';
-
-return lore ? name+'\n\n'+lore : name;
-
-}
-
-function slotHtml(it){
-
-if(!it){
-return '<div class="slot empty"></div>';
-}
-
-const rar=nameColor(it);
-
-return '<div class="slot filled" style="--rar:'+
-escapeHtml(rar)+'" title="'+
-escapeHtml(itemTitle(it))+'">'+
-'<img src="'+escapeHtml(itemImage(it))+
-'" alt="'+escapeHtml(stripMc(it.display&&it.display.name)||it.id)+
-'" loading="lazy" onerror="this.style.visibility=\'hidden\'">'+
-(it.count>1
-? '<span class="qty">'+it.count+'</span>'
-: '')+
-'</div>';
-
-}
-
-function panel(title,items,note,padTo){
-
-const list=(items||[]).slice();
-
-
-if(padTo){
-while(list.length<padTo){
-list.push(null);
-}
-}
-
-const filled=list.filter(Boolean).length;
-
-if(!filled && !note){
-return '';
-}
-
-return '<div class="panel">'+
-'<div class="panel-head">'+escapeHtml(title)+
-'<span class="count">'+filled+' item'+
-(filled===1?'':'s')+'</span>'+
-'</div>'+
-'<div class="slots">'+
-list.map(slotHtml).join('')+
-'</div>'+
-(note?'<div class="gear-note">'+escapeHtml(note)+'</div>':'')+
-'</div>';
-
-}
-
-
-
-function orderedArmor(armor){
-
-const a=(armor||[]).slice();
-
-while(a.length<4){
-a.push(null);
-}
-
-return a.slice(0,4);
-
-}
-
-
-
-const weaponVanilla={
-'267':1,'268':1,'272':1,'276':1,'283':1,  
-'261':1,                                  
-'271':1,'275':1,'279':1,'286':1,          
-'346':1                                   
-};
-
-function isWeapon(it){
-
-if(!it){
-return false;
-}
-
-const vid=String(it.vanillaId||'').split(':')[0];
-
-return !!weaponVanilla[vid];
-
-}
-
-function card(iconKey,label,cls,value,sub,extra){
-
-return '<div class="card">'+
-'<div class="label '+cls+'">'+
-'<img src="'+hyIcons[iconKey]+'" alt="">'+
-label+
-'</div>'+
-'<div class="value '+cls+'">'+value+'</div>'+
-(extra||'')+
-(sub?'<div class="sub">'+escapeHtml(sub)+'</div>':'')+
-'</div>';
-
-}
-
-function renderHypixelStats(best){
-
-const m=best.member;
-const prof=best.profile||{};
-
-const skills=(m.skills && m.skills.list)||[];
-
-const zonesVisited=(m.zones||[])
-.filter(function(z){return z.visited}).length;
-
-const zonesTotal=(m.zones||[]).length;
-
-const questsDone=(m.objectives||[])
-.filter(function(o){return o.completed}).length;
-
-const questsTotal=(m.objectives||[]).length;
-
-const souls=m.fairySouls||{};
-const slayers=m.slayers||{};
-
-let html='';
-
-html+='<div class="section-title">Overview</div>';
-
-const hasNw=(best.networth!==null && best.networth!==undefined);
-
-html+=card('networth','Networth','networth',
-hasNw ? '$'+shorten(Math.floor(best.networth)) : 'n/a',
-hasNw
-? (best.nwExact
-? 'items, pets, sacks and banked coins'
-: 'estimate only, items + purse')
-: 'networth data unavailable');
-
-html+=card('purse','Purse','money',
-'$'+shorten(Math.floor(m.purse||0)),null);
-
-html+=card('skillavg','Skill Average','skillavg',
-(m.skills && typeof m.skills.average==='number'
-? m.skills.average.toFixed(2)
-: '0'),
-(m.skills && m.skills.apiEnabled===false)
-? 'Skills API off - may be stale'
-: null);
-
-html+=card('slayer','Slayer XP','slayer',
-shorten(slayers.xp||0),
-(slayers.kills||0)+' boss kills');
-
-html+=card('souls','Fairy Souls','souls',
-capped(souls.total,souls.max),
-(souls.exchanges||0)+' exchanges');
-
-html+=card('kills','Kills','kills',
-shorten(statValue(m.stats,'kills')),null);
-
-html+=card('deaths','Deaths','deaths',
-shorten(statValue(m.stats,'deaths')),null);
-
-html+=card('minions','Minion Slots','minions',
-capped(prof.minionCount,prof.maxUniqueMinions),
-'unique minions crafted');
-
-html+=card('zones','Zones Found','zones',
-capped(zonesVisited,zonesTotal),null);
-
-html+=card('quests','Objectives','quests',
-capped(questsDone,questsTotal),null);
-
-html+=card('secrets','Dungeon Secrets','secrets',
-shorten(achAmount(m.achievements,'treasure_hunter')),null);
-
-
-
-const inv=m.inventories||{};
-
-const hasInv=Object.keys(inv).length>0;
-
-const armor=orderedArmor(inv.armor);
-
-const backpack=(inv.inventory||[]);
-
-const weapons=backpack.filter(isWeapon);
-
-if(hasInv){
-
-html+='<div class="section-title">Gear</div>';
-
-html+=panel('Armor',armor,null,4);
-
-
-html+='<div class="panel">'+
-'<div class="panel-head">Equipment'+
-'<span class="count">not in API</span>'+
-'</div>'+
-'<div class="slots">'+
-[null,null,null,null].map(slotHtml).join('')+
-'</div>'+
-'<div class="gear-note">'+
-'This API does not return the equipment slots '+
-'(necklace, cloak, belt, gloves).'+
-'</div>'+
-'</div>';
-
-if(weapons.length){
-html+=panel('Weapons',weapons,null,0);
-}
-
-if(backpack.filter(Boolean).length){
-html+=panel('Inventory',backpack,null,0);
-}
-
-if((inv.accessory_bag||[]).filter(Boolean).length){
-html+=panel('Accessory Bag',inv.accessory_bag,null,0);
-}
-
-if((inv.ender_chest||[]).filter(Boolean).length){
-html+=panel('Ender Chest',inv.ender_chest,null,0);
-}
-
-if((inv.wardrobe||[]).filter(Boolean).length){
-html+=panel('Wardrobe',inv.wardrobe,null,0);
-}
-
-}else{
-
-html+='<div class="section-title">Gear</div>';
-
-html+='<div class="panel">'+
-'<div class="panel-head">Armor &amp; Inventory'+
-'<span class="count">hidden</span>'+
-'</div>'+
-'<div class="slots">'+
-[null,null,null,null].map(slotHtml).join('')+
-'</div>'+
-'<div class="gear-note">'+
-'This player has the inventory API disabled '+
-'in their SkyBlock settings, so no items are returned.'+
-'</div>'+
-'</div>';
-
-}
-
-if(skills.length){
-
-html+='<div class="section-title">Skills</div>';
-
-for(let i=0;i<skills.length;i++){
-
-const s=skills[i];
-
-const maxed=s.level>=s.maxLevel;
-
-const pct=maxed
-? 100
-: (s.levelXpRequired>0
-? Math.min(100,(s.levelXp/s.levelXpRequired)*100)
-: 0);
-
-const name=s.id.charAt(0).toUpperCase()+
-s.id.slice(1).replace(/_/g,' ');
-
-const bar='<div class="bar'+(maxed?' gold':'')+
-'"><i style="width:'+pct.toFixed(1)+'%"></i></div>';
-
-html+='<div class="card">'+
-'<div class="label '+s.id+'">'+
-'<img src="'+(hyIcons[s.id]||hyIcons.skillavg)+'" alt="">'+
-escapeHtml(name)+
-'</div>'+
-'<div class="value '+s.id+'">'+
-Math.min(s.level,s.maxLevel)+
-'<small>/'+s.maxLevel+'</small>'+
-'</div>'+
-bar+
-'<div class="sub">'+
-(maxed?'MAXED - ':'')+
-shorten(s.xp)+' XP'+
-'</div>'+
-'</div>';
-
-}
-
-}
-
-document.getElementById('stats').innerHTML=html;
-
-}
-
-
-
-
-
-function donutStatsFromPage(page){
-
-let doc;
-
-try{
-doc=new DOMParser().parseFromString(page,'text/html');
-}catch(e){
-return null;
-}
-
-const blocks=doc.querySelectorAll(
-'script[type="application/ld+json"]'
-);
-
-for(let i=0;i<blocks.length;i++){
-
-let json;
-
-try{
-json=JSON.parse(blocks[i].textContent);
-}catch(e){
-continue;
-}
-
-const graph=json['@graph']||[json];
-
-for(let j=0;j<graph.length;j++){
-
-const entity=graph[j] && graph[j].mainEntity;
-
-const props=entity && entity.additionalProperty;
-
-if(!props || !props.length){
-continue;
-}
-
-const out={};
-
-for(let k=0;k<props.length;k++){
-
-if(props[k] && props[k].name){
-out[props[k].name]=props[k].value;
-}
-
-}
-
-if(Object.keys(out).length){
-return out;
-}
-
-}
-
-}
-
-return null;
-
-}
-
-async function fetchDonut(){
-
-const username=document
-.getElementById('username')
-.value.trim();
-
-const stats=document.getElementById('stats');
-
-const loading=document.getElementById('loading');
-
-const error=document.getElementById('error');
-
-if(!username){
-
-error.innerText='Enter username';
-return;
-
-}
-
-clearPlayerUI();
-
-loading.innerText='Loading stats...';
-
-try{
-
-
-
-const target=
-'https://www.donutstats.net/player/'+
-encodeURIComponent(username)+
-'?ref=player-stats';
-
-let response;
-
-try{
-
-response=await fetch(
-'https://r.jina.ai/'+target,
-{ headers:{ 'x-respond-with':'html' } }
-);
-
-}catch(e){
-
-loading.innerText='';
-error.innerText='Could not reach the DonutSMP stats source.';
-return;
-
-}
-
-const page=await response.text();
-
-loading.innerText='';
-
-const s=donutStatsFromPage(page);
-
-if(!s){
-
-error.innerText='No DonutSMP stats found for that player.';
-return;
-
-}
-
-showName(username);
-
-document.getElementById('skin')
-.src='https://vzge.me/bust/'+
-encodeURIComponent(username)+
-'.png?autocrop';
-
-const cards=[
-
-['money','Money',money(s.money),'money'],
-
-['shards','Shards',
-shorten(s.shards),'shards'],
-
-['playtime','Playtime',
-playtime(s.playtime),'playtime'],
-
-['kills','Kills',
-shorten(s.kills),'kills'],
-
-['deaths','Deaths',
-shorten(s.deaths),'deaths'],
-
-['placed_blocks','Blocks Placed',
-shorten(s.placed_blocks),'placed'],
-
-['broken_blocks','Blocks Broken',
-shorten(s.broken_blocks),'broken'],
-
-['mobs_killed','Mobs Killed',
-shorten(s.mobs_killed),'mobs'],
-
-['kills','K/D',kd(s.kills,s.deaths),'kd']
-
-];
-
-stats.innerHTML='';
-
-for(let i=0;i<cards.length;i++){
-
-const c=cards[i];
-
-stats.innerHTML +=
-
-'<div class="card">'+
-
-'<div class="label '+c[3]+'">'+
-
-'<img src="'+icons[c[0]]+'" alt="">'+
-
-c[1]+
-
-'</div>'+
-
-'<div class="value '+c[3]+'">'+
-
-c[2]+
-
-'</div>'+
-
-'</div>';
-
-}
-
-}catch(err){
-
-loading.innerText='';
-
-error.innerText='Failed to fetch API';
-
-console.log(err);
-
-}
-
-}
-
-function shorten(num){
-    if (num === null || num === undefined) return '0';
-
-    let cleanNum = String(num).replace(/,/g, '').trim();
-    let n = parseFloat(cleanNum);
-
-    if (isNaN(n)) return '0';
-
-    let abs = Math.abs(n);
-
-    if(abs >= 1e12){
-        return (n / 1e12).toFixed(1).replace(/\.0$/, '') + 'T';
-    }
-    if(abs >= 1e9){
-        return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
-    }
-    if(abs >= 1e6){
-        return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-    }
-    if(abs >= 1e3){
-        return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
-    }
-
-    return String(Math.round(n * 100) / 100);
-}
-
-function money(num){
-    return '$' + shorten(num);
-}
-
-
+const $=id=>document.getElementById(id);
+const nameEl=$('playerName'), statusEl=$('status'), statsEl=$('stats'),
+      skinEl=$('skin'), btn=$('searchBtn'), input=$('username');
+
+let requestId=0;
+
+/* ---------- formatting ---------- */
+function shorten(v){
+  const n=parseFloat(String(v??'').replace(/,/g,''));
+  if(!isFinite(n)) return '0';
+  const a=Math.abs(n);
+  const units=[[1e12,'T'],[1e9,'B'],[1e6,'M'],[1e3,'K']];
+  for(const [size,suffix] of units){
+    if(a>=size) return (n/size).toFixed(1).replace(/\.0$/,'')+suffix;
+  }
+  return String(Math.round(n*100)/100);
+}
+const money=v=>'$'+shorten(v);
 
 function kd(kills,deaths){
-
-const k=parseFloat(String(kills||0).replace(/,/g,''));
-const d=parseFloat(String(deaths||0).replace(/,/g,''));
-
-if(!isFinite(k)){
-return '0';
+  const k=parseFloat(String(kills??0).replace(/,/g,''))||0;
+  const d=parseFloat(String(deaths??0).replace(/,/g,''))||0;
+  return d?(k/d).toFixed(2):String(k);
 }
-
-if(!d){
-return String(k);
-}
-
-return (k/d).toFixed(2);
-
-}
-
-
 
 function playtime(ms){
-
-const total=Math.floor(Number(ms)/1000);
-
-if(!isFinite(total) || total<=0){
-return '0m';
+  const t=Math.floor(Number(ms)/1000);
+  if(!isFinite(t)||t<=0) return '0m';
+  const d=Math.floor(t/86400), h=Math.floor(t%86400/3600), m=Math.floor(t%3600/60);
+  return d?`${d}d ${h}h`:h?`${h}h ${m}m`:`${m}m`;
 }
 
-const d=Math.floor(total/86400);
-const h=Math.floor((total%86400)/3600);
-const m=Math.floor((total%3600)/60);
-
-if(d>0){
-return d+'d '+h+'h';
+/* ---------- ui helpers ---------- */
+function setStatus(text,isError){
+  statusEl.textContent=text||'';
+  statusEl.classList.toggle('error',!!isError);
 }
 
-if(h>0){
-return h+'h '+m+'m';
+function setBusy(busy){
+  btn.disabled=busy;
+  btn.textContent=busy?'Loading...':'Search';
 }
 
-return m+'m';
-
+function showName(text){
+  nameEl.textContent=text;
+  nameEl.classList.remove('idle','shine');
+  void nameEl.offsetWidth;
+  nameEl.classList.add('shine');
 }
 
-startIdleFade(0);
-
-document
-.getElementById('username')
-.addEventListener('keypress',function(e){
-
-if(e.key==='Enter'){
-fetchStats()
+function resetName(){
+  nameEl.textContent='DonutSMP';
+  nameEl.classList.remove('shine');
+  nameEl.classList.add('idle');
 }
 
-});
+function renderCards(s){
+  const cards=[
+    ['money','Money',money(s.money),'money'],
+    ['shards','Shards',shorten(s.shards),'shards'],
+    ['playtime','Playtime',playtime(s.playtime),'playtime'],
+    ['kills','Kills',shorten(s.kills),'kills'],
+    ['deaths','Deaths',shorten(s.deaths),'deaths'],
+    ['placed','Blocks Placed',shorten(s.placed_blocks),'placed'],
+    ['broken','Blocks Broken',shorten(s.broken_blocks),'broken'],
+    ['mobs','Mobs Killed',shorten(s.mobs_killed),'mobs'],
+    ['kd','K/D',kd(s.kills,s.deaths),'kd']
+  ];
+  statsEl.innerHTML=cards.map(([icon,label,value,cls],i)=>
+    `<div class="card" style="animation-delay:${i*40}ms">
+       <div class="label ${cls}"><img src="${ICONS[icon]}" alt="" loading="lazy" onerror="this.style.display='none'">${label}</div>
+       <div class="value ${cls}">${value}</div>
+     </div>`).join('');
+}
 
+/* ---------- data ---------- */
+function parseStats(page){
+  let doc;
+  try{ doc=new DOMParser().parseFromString(page,'text/html'); }catch(e){ return null; }
+  const blocks=doc.querySelectorAll('script[type="application/ld+json"]');
+  for(const block of blocks){
+    let json;
+    try{ json=JSON.parse(block.textContent); }catch(e){ continue; }
+    const graph=Array.isArray(json['@graph'])?json['@graph']:[json];
+    for(const node of graph){
+      const props=node&&node.mainEntity&&node.mainEntity.additionalProperty;
+      if(!Array.isArray(props)||!props.length) continue;
+      const out={};
+      for(const p of props){ if(p&&p.name) out[p.name]=p.value; }
+      if(Object.keys(out).length) return out;
+    }
+  }
+  return null;
+}
+
+async function search(){
+  const username=input.value.trim();
+
+  if(!username){ setStatus('Enter a username.',true); return; }
+  if(!/^[A-Za-z0-9_.]{1,16}$/.test(username)){
+    setStatus('Usernames can only use letters, numbers, "_" and ".".',true);
+    return;
+  }
+
+  const id=++requestId;
+  statsEl.innerHTML='';
+  setStatus('Loading stats...');
+  setBusy(true);
+
+  try{
+    const target='https://www.donutstats.net/player/'+encodeURIComponent(username)+'?ref=player-stats';
+    const res=await fetch('https://r.jina.ai/'+target,{headers:{'x-respond-with':'html'}});
+    if(id!==requestId) return;                 // a newer search replaced this one
+    if(!res.ok) throw new Error('HTTP '+res.status);
+
+    const stats=parseStats(await res.text());
+    if(id!==requestId) return;
+
+    if(!stats){ setStatus('No DonutSMP stats found for that player.',true); return; }
+
+    setStatus('');
+    showName(username);
+    skinEl.src='https://vzge.me/bust/'+encodeURIComponent(username)+'.png?autocrop';
+    renderCards(stats);
+  }catch(err){
+    if(id!==requestId) return;
+    console.error(err);
+    setStatus('Could not reach the stats source. Please try again.',true);
+  }finally{
+    if(id===requestId) setBusy(false);
+  }
+}
+
+skinEl.addEventListener('error',()=>{ skinEl.src='https://vzge.me/bust/steve.png?autocrop'; },{once:true});
+
+$('searchForm').addEventListener('submit',e=>{ e.preventDefault(); search(); });
+input.addEventListener('input',()=>{ if(!input.value.trim()&&!statsEl.children.length) resetName(); });
 </script>
-
 </body>
 </html>
